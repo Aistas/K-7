@@ -1,48 +1,50 @@
 import React, { useState } from 'react';
-import Ingredients from './containers/Ingredients';
-import Burger from './components/Burger/Burger';
+import Products from './containers/Products.tsx';
+import Assortment from './components/Assortment/Assortment.tsx';
 import './App.css';
 
 const App: React.FC = () => {
-    const [burgerIngredients, setBurgerIngredients] = useState<{ [key: string]: number }>({
+    const [assortmentProducts, setAssortmentProducts] = useState<{ [key: string]: number }>({
         Salad: 0,
         Cheese: 0,
         Meat: 0,
-        Bacon: 0
+        Bacon: 0,
+        Sandwich: 0,
+        Pizza: 0
     });
 
-    const addIngredient = (name: string) => {
-        setBurgerIngredients(prev => ({
+    const addProduct = (name: string) => {
+        setAssortmentProducts(prev => ({
             ...prev,
             [name]: (prev[name] || 0) + 1,
         }));
     };
 
-    const removeIngredient = (name: string) => {
-        setBurgerIngredients(prev => ({
+    const removeProduct = (name: string) => {
+        setAssortmentProducts(prev => ({
             ...prev,
             [name]: Math.max((prev[name] || 0) - 1, 0),
         }));
     };
 
     const calculatePrice = () => {
-        const basePrice = 30;
-        const prices: { [key: string]: number } = { Salad: 10, Cheese: 50, Meat: 80, Bacon: 60 };
+        const basePrice = 0;
+        const prices: { [key: string]: number } = { Salad: 10, Cheese: 50, Meat: 80, Bacon: 60, Sandwich: 100, Pizza: 90 };
         let total = basePrice;
-        for (const [ingredient, count] of Object.entries(burgerIngredients)) {
-            total += prices[ingredient] * count;
+        for (const [product, count] of Object.entries(assortmentProducts)) {
+            total += prices[product] * count;
         }
         return total;
     };
 
     return (
         <div className="App">
-            <Ingredients
-                addIngredient={addIngredient}
-                removeIngredient={removeIngredient}
-                burgerIngredients={burgerIngredients}
+            <Products
+                addProduct={addProduct}
+                removeProduct={removeProduct}
+                assortmentProducts={assortmentProducts}
             />
-            <Burger ingredients={burgerIngredients} />
+            <Assortment products={assortmentProducts} />
             <div>Total Price: {calculatePrice()} сом</div>
         </div>
     );
